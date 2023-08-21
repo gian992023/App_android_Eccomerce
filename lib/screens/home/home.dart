@@ -25,6 +25,7 @@ class _HomeState extends State<Home> {
     super.initState();
   }
 
+
   void getCategoryList() async {
     setState(() {
       isLoading = true;
