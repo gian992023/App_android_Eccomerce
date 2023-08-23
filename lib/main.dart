@@ -1,11 +1,13 @@
 import 'package:conexion/constants/theme.dart';
 import 'package:conexion/firebase_helper/firebase_auth_helper/firebase_auth_helper.dart';
 import 'package:conexion/firebase_helper/firebase_options/firebase_options.dart';
+import 'package:conexion/provider/app_provider.dart';
 import 'package:conexion/screens/auth_ui/bienvenido/bienvenido.dart';
 
 import 'package:conexion/screens/home/home.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,17 +22,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Compy E Commerce',
-        theme: themeData,
-        home: StreamBuilder(
-            stream: FirebaseAuthHelper.instance.getAuthChange,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return const Home();
-              }
-              return const Bienvenido();
-            }));
+    return ChangeNotifierProvider(
+      create: (context) => AppProvider(),
+      child: MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Compy E Commerce',
+      theme: themeData,
+      home: StreamBuilder(
+          stream: FirebaseAuthHelper.instance.getAuthChange,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return const Home();
+            }
+            return const Bienvenido();
+          }),
+      )
+    );
   }
 }

@@ -1,39 +1,32 @@
-import 'package:conexion/constants/routes.dart';
-import 'package:conexion/firebase_helper/firebase_firestore_helper/firebase_firestore.dart';
 import 'package:conexion/models/category_model/category_model.dart';
-import 'package:conexion/screens/category_view/category_view.dart';
-import 'package:conexion/screens/product_detail/product_details.dart';
 import 'package:conexion/widgets/top_titles/top_titles.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../constants/routes.dart';
+import '../../firebase_helper/firebase_firestore_helper/firebase_firestore.dart';
 import '../../models/product_model/product_model.dart';
+import '../product_detail/product_details.dart';
 
-class Home extends StatefulWidget {
-  const Home({super.key});
+class CategoryView extends StatefulWidget {
+  final CategoryModel categoryModel;
+
+  const CategoryView({super.key, required this.categoryModel});
 
   @override
-  State<Home> createState() => _HomeState();
+  State<CategoryView> createState() => _CategoryViewState();
 }
 
-class _HomeState extends State<Home> {
-  List<CategoryModel> categoriesList = [];
+class _CategoryViewState extends State<CategoryView> {
   List<ProductModel> productModelList = [];
   bool isLoading = false;
-
-  @override
-  void initState() {
-    getCategoryList();
-    super.initState();
-  }
-
 
   void getCategoryList() async {
     setState(() {
       isLoading = true;
     });
-    categoriesList = await FirebaseFirestoreHelper.instance.getCategories();
-    productModelList = await FirebaseFirestoreHelper.instance.getBestProducts();
+
+    productModelList = await FirebaseFirestoreHelper.instance
+        .getCategoryViewProduct(widget.categoryModel.id);
     productModelList.shuffle();
     setState(() {
       isLoading = false;
@@ -41,11 +34,16 @@ class _HomeState extends State<Home> {
   }
 
   @override
+  void initState() {
+    getCategoryList();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: isLoading
           ? Center(
-
               child: Container(
                 height: 100,
                 width: 100,
@@ -57,79 +55,23 @@ class _HomeState extends State<Home> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  const SizedBox(height: kToolbarHeight*1,),
                   Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    padding: EdgeInsets.all(12),
+                    child: Row(
                       children: [
-                        const TopTitles(subtitle: "", title: "Mi comercio"),
-                        TextFormField(
-                          decoration:
-                              const InputDecoration(hintText: "Search..."),
-                        ),
-                        const SizedBox(
-                          height: 24,
-                        ),
-                        const Text(
-                          "Categorias",
-                          style: TextStyle(
-                            fontSize: 18,
+                        const BackButton(),
+                        Text(
+                          widget.categoryModel.name,
+                          style: const TextStyle(
+                            fontSize: 18.0,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                       ],
                     ),
                   ),
-                  categoriesList.isEmpty
-                      ? const Center(
-                          child: Text("Categorias vacias"),
-                        )
-                      : SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: categoriesList
-                                .map((e) => Padding(
-                                      padding: const EdgeInsets.only(left: 8.0),
-                                      child: CupertinoButton (
-                                      padding: EdgeInsets.zero,
-                                        onPressed: (){
-                                        Routes.instance.push(widget: CategoryView(categoryModel: e), context: context);
-                                        },
-                                        child: Card(
-                                        color: Colors.white,
-                                        elevation: 3,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                        ),
-                                        child: SizedBox(
-                                          height: 100,
-                                          width: 100,
-                                          child: Image.network(e.image),
-                                        ),
-                                      ),
-                                      ),
-                                    ))
-                                .toList(),
-                          ),
-                        ),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  const Padding(
 
-                    padding: EdgeInsets.only(top: 12.0, left: 12),
-                    child: Text(
-                      "Mas vendidos",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 12,
-                  ),
                   productModelList.isEmpty
                       ? const Center(
                           child: Text("Sin productos"),

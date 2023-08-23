@@ -35,9 +35,12 @@ ThemeData themeData=ThemeData(
     ),
 
   ),
+  primarySwatch: Colors.red,
+  canvasColor: Colors.red,
   appBarTheme: const AppBarTheme(
     backgroundColor: Colors.white,
     elevation: 0.0,
+
     iconTheme: IconThemeData(color: Colors.black )
   )
 

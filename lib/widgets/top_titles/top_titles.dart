@@ -14,7 +14,7 @@ class TopTitles extends StatelessWidget {
         const SizedBox(
           height: kToolbarHeight + 12,
         ),
-        if (title == "Iniciar sesion" || title == "Registrarse" || title == "Crear usuario")
+        if (title == "Iniciar sesion" || title == "Registrarse" || title == "Crear usuario" )
           GestureDetector(
 
             onTap: () {
