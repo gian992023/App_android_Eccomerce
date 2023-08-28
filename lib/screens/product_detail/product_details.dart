@@ -147,8 +147,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                     width: 140,
                     child: ElevatedButton(
                       onPressed: () {
-                        Routes.instance
-                            .push(widget: const FavouriteScreen(), context: context);
+                      //  Routes.instance
+                        //    .push(widget: const FavouriteScreen(), context: context);
                       },
                       child: const Text("Comprar"),
                     ),
@@ -156,7 +156,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                 ],
               ),
               const SizedBox(
-                height: 24,
+                height:50,
               ),
             ],
           ),

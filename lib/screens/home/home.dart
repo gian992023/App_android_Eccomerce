@@ -1,11 +1,13 @@
 import 'package:conexion/constants/routes.dart';
 import 'package:conexion/firebase_helper/firebase_firestore_helper/firebase_firestore.dart';
 import 'package:conexion/models/category_model/category_model.dart';
+import 'package:conexion/provider/app_provider.dart';
 import 'package:conexion/screens/category_view/category_view.dart';
 import 'package:conexion/screens/product_detail/product_details.dart';
 import 'package:conexion/widgets/top_titles/top_titles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../models/product_model/product_model.dart';
 
@@ -23,10 +25,11 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
+    AppProvider appProvider = Provider.of<AppProvider>(context, listen: false);
+    appProvider.getUserInfoFirebase();
     getCategoryList();
     super.initState();
   }
-
 
   void getCategoryList() async {
     setState(() {
@@ -45,7 +48,6 @@ class _HomeState extends State<Home> {
     return Scaffold(
       body: isLoading
           ? Center(
-
               child: Container(
                 height: 100,
                 width: 100,
@@ -90,24 +92,27 @@ class _HomeState extends State<Home> {
                             children: categoriesList
                                 .map((e) => Padding(
                                       padding: const EdgeInsets.only(left: 8.0),
-                                      child: CupertinoButton (
-                                      padding: EdgeInsets.zero,
-                                        onPressed: (){
-                                        Routes.instance.push(widget: CategoryView(categoryModel: e), context: context);
+                                      child: CupertinoButton(
+                                        padding: EdgeInsets.zero,
+                                        onPressed: () {
+                                          Routes.instance.push(
+                                              widget: CategoryView(
+                                                  categoryModel: e),
+                                              context: context);
                                         },
                                         child: Card(
-                                        color: Colors.white,
-                                        elevation: 3,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
+                                          color: Colors.white,
+                                          elevation: 3,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                          ),
+                                          child: SizedBox(
+                                            height: 100,
+                                            width: 100,
+                                            child: Image.network(e.image),
+                                          ),
                                         ),
-                                        child: SizedBox(
-                                          height: 100,
-                                          width: 100,
-                                          child: Image.network(e.image),
-                                        ),
-                                      ),
                                       ),
                                     ))
                                 .toList(),
@@ -117,7 +122,6 @@ class _HomeState extends State<Home> {
                     height: 12,
                   ),
                   const Padding(
-
                     padding: EdgeInsets.only(top: 12.0, left: 12),
                     child: Text(
                       "Mas vendidos",
@@ -137,7 +141,7 @@ class _HomeState extends State<Home> {
                       : Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: GridView.builder(
-                              padding: EdgeInsets.zero,
+                              padding: EdgeInsets.only(bottom: 50),
                               shrinkWrap: true,
                               primary: false,
                               itemCount: productModelList.length,

@@ -2,6 +2,7 @@
 import 'package:conexion/firebase_helper/firebase_auth_helper/firebase_auth_helper.dart';
 import 'package:conexion/constants/constants.dart';
 import 'package:conexion/screens/auth_ui/login/login.dart';
+import 'package:conexion/screens/custom_bottom_bar/custom_bottom_bar.dart';
 import 'package:conexion/screens/home/home.dart';
 import 'package:conexion/widgets/primary_button/primary_button.dart';
 import 'package:conexion/widgets/top_titles/top_titles.dart';
@@ -19,9 +20,10 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   TextEditingController email = TextEditingController();
-  TextEditingController password = TextEditingController();
+
   TextEditingController name = TextEditingController();
   TextEditingController phone = TextEditingController();
+  TextEditingController password = TextEditingController();
   bool isShowPassword = true;
 
   @override
@@ -102,10 +104,10 @@ class _SignUpState extends State<SignUp> {
                     email.text, password.text, name.text, phone.text);
                 if (isValidated) {
                   bool isLogined = await FirebaseAuthHelper.instance
-                      .singUp(email.text, password.text, context);
+                      .singUp(name.text, email.text, password.text, context);
                   if (isLogined) {
                     Routes.instance.pushAndRemoveUntil(
-                        widget: const Home(), context: context);
+                        widget: const CustomBottomBar(), context: context);
                   }
                 }
               },

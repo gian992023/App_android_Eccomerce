@@ -4,11 +4,14 @@ import 'package:conexion/constants/constants.dart';
 import 'package:conexion/constants/routes.dart';
 import 'package:conexion/firebase_helper/firebase_auth_helper/firebase_auth_helper.dart';
 import 'package:conexion/screens/auth_ui/sign_up/sign_up.dart';
+
 import 'package:conexion/screens/home/home.dart';
 import 'package:conexion/widgets/primary_button/primary_button.dart';
 import 'package:conexion/widgets/top_titles/top_titles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import '../../custom_bottom_bar/custom_bottom_bar.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -79,7 +82,7 @@ class _LoginState extends State<Login> {
                       .login(email.text, password.text, context);
                   if (isLogined) {
                     Routes.instance.pushAndRemoveUntil(
-                        widget: const Home(), context: context);
+                        widget: const CustomBottomBar(), context: context);
                   }
                 }
               },

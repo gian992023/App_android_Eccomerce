@@ -3,6 +3,7 @@ import 'package:conexion/firebase_helper/firebase_auth_helper/firebase_auth_help
 import 'package:conexion/firebase_helper/firebase_options/firebase_options.dart';
 import 'package:conexion/provider/app_provider.dart';
 import 'package:conexion/screens/auth_ui/bienvenido/bienvenido.dart';
+import 'package:conexion/screens/custom_bottom_bar/custom_bottom_bar.dart';
 
 import 'package:conexion/screens/home/home.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -23,20 +24,20 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => AppProvider(),
-      child: MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Compy E Commerce',
-      theme: themeData,
-      home: StreamBuilder(
-          stream: FirebaseAuthHelper.instance.getAuthChange,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return const Home();
-            }
-            return const Bienvenido();
-          }),
-      )
-    );
+        create: (context) => AppProvider(),
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Compy E Commerce',
+          theme: themeData,
+          home: StreamBuilder(
+            stream: FirebaseAuthHelper.instance.getAuthChange,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return const CustomBottomBar();
+              }
+              return const Bienvenido();
+            },
+          ),
+        ));
   }
 }

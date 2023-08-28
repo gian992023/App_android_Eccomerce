@@ -17,17 +17,19 @@ class SingleCartItem extends StatefulWidget {
 
 class _SingleCartItemState extends State<SingleCartItem> {
   int qty = 1;
+
   @override
   void initState() {
-    qty= widget.singleProduct.qty??1;
-    setState(() {
-
-    });
+    qty = widget.singleProduct.qty ?? 1;
+    setState(() {});
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    AppProvider appProvider = Provider.of<AppProvider>(
+      context,
+    );
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
@@ -47,107 +49,114 @@ class _SingleCartItemState extends State<SingleCartItem> {
               ),
             ),
           ),
-           Expanded(
+          Expanded(
             flex: 2,
             child: SizedBox(
               height: 140,
               child: Padding(
-                padding: const EdgeInsets.all(12),
-                  child: Stack(
-                      alignment: Alignment.bottomRight,
-                      children: [
-                        Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
+                  padding: const EdgeInsets.all(12),
+                  child: Stack(alignment: Alignment.bottomRight, children: [
+                    Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              widget.singleProduct.name,
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                CupertinoButton(
+                                  onPressed: () {
+                                    if (qty >= 1) {
+                                      setState(() {
+                                        qty--;
+                                      });
+                                    }
+                                  },
+                                  padding: EdgeInsets.zero,
+                                  child: CircleAvatar(
+                                    maxRadius: 13,
+                                    child: Icon(Icons.remove),
+                                  ),
+                                ),
+                                Text(
+                                  qty.toString(),
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                CupertinoButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      qty++;
+                                    });
+                                  },
+                                  padding: EdgeInsets.zero,
+                                  child: CircleAvatar(
+                                    maxRadius: 13,
+                                    child: Icon(Icons.add),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            CupertinoButton(
+                              padding: EdgeInsets.zero,
+                              onPressed: () {
+                                if (!appProvider.getFavouriteProductList
+                                    .contains(widget.singleProduct)) {
+                                  appProvider.addFavouriteProduct(
+                                      widget.singleProduct);
+                                  showMessage("Agregar al carrito");
+                                } else {
+                                  appProvider.removeFavouriteProduct(
+                                      widget.singleProduct);
+                                  showMessage("Remover del carrito");
+                                }
+                              },
+                              child: Text(
+                                appProvider.getFavouriteProductList
+                                        .contains(widget.singleProduct)
+                                    ? "Remover de favoritos"
+                                    : "Agregar a favoritos",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                         Text(
-                          widget.singleProduct.name,
+                          "\$${widget.singleProduct.price.toString()}",
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Row(
-                          children: [
-                            CupertinoButton(
-                              onPressed: () {
-                                if (qty >= 1) {
-                                  setState(() {
-                                    qty--;
-                                  });
-                                }
-                              },
-                              padding: EdgeInsets.zero,
-                              child: CircleAvatar(
-                                maxRadius: 13,
-                                child: Icon(Icons.remove),
-                              ),
-                            ),
-                            Text(
-                              qty.toString(),
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            CupertinoButton(
-                              onPressed: () {
-                                setState(() {
-                                  qty++;
-                                });
-                              },
-                              padding: EdgeInsets.zero,
-                              child: CircleAvatar(
-                                maxRadius: 13,
-                                child: Icon(Icons.add),
-                              ),
-                            ),
-                          ],
-                        ),
-
-                          CupertinoButton(
-                            padding: EdgeInsets.zero,
-                            onPressed: () {},
-                            child: const Text(
-                              "Agregar al carrito",
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-
-
-
                       ],
                     ),
-                    Text(
-                      "\$${widget.singleProduct.price.toString()}",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-                        CupertinoButton(
-                            padding: EdgeInsets.zero,
-                            onPressed: () {
-                              AppProvider appProvider = Provider.of<AppProvider>(context, listen: false);
-                              appProvider.removeCartProduct(widget.singleProduct);
-                              showMessage("Remover del carrito");
-                            },
-                            child: const CircleAvatar(
-                              maxRadius: 13,
-                              child: Icon(Icons.delete,size: 19,),
-                            )
-                        ),
-                ]
-                )
-              ),
+                    CupertinoButton(
+                        padding: EdgeInsets.zero,
+                        onPressed: () {
+                          appProvider.removeCartProduct(widget.singleProduct);
+                          showMessage("Remover del carrito");
+                        },
+                        child: const CircleAvatar(
+                          maxRadius: 13,
+                          child: Icon(
+                            Icons.delete,
+                            size: 19,
+                          ),
+                        )),
+                  ])),
             ),
           )
         ],
