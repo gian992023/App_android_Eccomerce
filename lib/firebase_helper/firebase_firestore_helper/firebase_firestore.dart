@@ -107,9 +107,8 @@ class FirebaseFirestoreHelper {
   }
 
   ////obtener orden usuario
-  Future<List<OrderModel>> getUserOrder(BuildContext context) async {
+  Future<List<OrderModel>> getUserOrder() async {
     try {
-      showLoaderDialog(context);
       QuerySnapshot<Map<String, dynamic>> querySnapshot =
           await _firebaseFirestore
               .collection("userOrders")
@@ -119,10 +118,9 @@ class FirebaseFirestoreHelper {
       List<OrderModel> orderList = querySnapshot.docs
           .map((element) => OrderModel.fromJson(element.data()))
           .toList();
-      Navigator.of(context, rootNavigator: true).pop();
       return orderList;
     } catch (e) {
-      Navigator.of(context, rootNavigator: true).pop();
+      showMessage(e.toString());
       return [];
     }
   }

@@ -19,10 +19,10 @@ class OrderScreen extends StatelessWidget {
         ),
       ),
       body: FutureBuilder(
-        future: FirebaseFirestoreHelper.instance.getUserOrder(context),
+        future: FirebaseFirestoreHelper.instance.getUserOrder(),
         builder: (context, snapshot) {
           if (snapshot.data!.isEmpty || snapshot.data == null) {
-            return Center(
+            return const Center(
               child: Text("No se encontraron ordenes"),
             );
           }
@@ -43,7 +43,7 @@ class OrderScreen extends StatelessWidget {
                     ),
                   )
                 ],
-              ),
+              );
             },
           );
         },
