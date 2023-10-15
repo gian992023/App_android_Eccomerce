@@ -81,7 +81,7 @@ TextEditingController textEditingController=TextEditingController();
             appProvider.updateUserInfoFirebase(context, userModel, image);
 
           },
-        )
+        ),
       ]),
     );
   }

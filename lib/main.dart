@@ -4,8 +4,6 @@ import 'package:conexion/firebase_helper/firebase_options/firebase_options.dart'
 import 'package:conexion/provider/app_provider.dart';
 import 'package:conexion/screens/auth_ui/bienvenido/bienvenido.dart';
 import 'package:conexion/screens/custom_bottom_bar/custom_bottom_bar.dart';
-
-import 'package:conexion/screens/home/home.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

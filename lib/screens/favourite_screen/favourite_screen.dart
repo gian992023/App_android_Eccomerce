@@ -16,7 +16,7 @@ class FavouriteScreen extends StatelessWidget {
       appBar: AppBar(
         //backgroundColor: Colors.cyan,
         title: const Text(
-          "Vista de carta",
+          "Favoritos",
           style: TextStyle(color: Colors.black),
         ),
       ),

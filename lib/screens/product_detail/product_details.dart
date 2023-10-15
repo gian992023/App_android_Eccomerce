@@ -2,6 +2,7 @@ import 'package:conexion/constants/constants.dart';
 import 'package:conexion/constants/routes.dart';
 import 'package:conexion/models/product_model/product_model.dart';
 import 'package:conexion/provider/app_provider.dart';
+import 'package:conexion/screens/check_out/check_out.dart';
 import 'package:conexion/screens/cart_screen/cart_screen.dart';
 import 'package:conexion/screens/favourite_screen/favourite_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -66,11 +67,13 @@ class _ProductDetailsState extends State<ProductDetails> {
                       });
                       if (widget.singleProduct.isFavourite) {
                         appProvider.addFavouriteProduct(widget.singleProduct);
-                      }else{
-                        appProvider.removeFavouriteProduct(widget.singleProduct);
+                      } else {
+                        appProvider
+                            .removeFavouriteProduct(widget.singleProduct);
                       }
                     },
-                    icon: Icon(appProvider.getFavouriteProductList.contains(widget.singleProduct)
+                    icon: Icon(appProvider.getFavouriteProductList
+                            .contains(widget.singleProduct)
                         ? Icons.favorite
                         : Icons.favorite_border_outlined),
                   )
@@ -147,8 +150,13 @@ class _ProductDetailsState extends State<ProductDetails> {
                     width: 140,
                     child: ElevatedButton(
                       onPressed: () {
-                      //  Routes.instance
-                        //    .push(widget: const FavouriteScreen(), context: context);
+                        ProductModel productModel =
+                            widget.singleProduct.copyWith(qty: qty);
+                        Routes.instance.push(
+                            widget: Checkout(
+                              singleProduct: productModel,
+                            ),
+                            context: context);
                       },
                       child: const Text("Comprar"),
                     ),
@@ -156,7 +164,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                 ],
               ),
               const SizedBox(
-                height:50,
+                height: 50,
               ),
             ],
           ),

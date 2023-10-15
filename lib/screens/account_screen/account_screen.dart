@@ -1,6 +1,8 @@
 import 'package:conexion/constants/routes.dart';
 import 'package:conexion/firebase_helper/firebase_auth_helper/firebase_auth_helper.dart';
+import 'package:conexion/screens/change_password/change_password.dart';
 import 'package:conexion/screens/edit_profile/edit_profile.dart';
+import 'package:conexion/screens/favourite_screen/favourite_screen.dart';
 import 'package:conexion/widgets/primary_button/primary_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -91,7 +93,9 @@ class _AccountScreenState extends State<AccountScreen> {
                     title: Text("Tus pedidos"),
                   ),
                   ListTile(
-                    onTap: () {},
+                    onTap: () {
+                      Routes.instance.push(widget: const FavouriteScreen(), context: context);
+                    },
                     leading: Icon(Icons.favorite_outline),
                     title: Text("Favoritos"),
                   ),
@@ -101,7 +105,9 @@ class _AccountScreenState extends State<AccountScreen> {
                     title: Text("Acerca de mi"),
                   ),
                   ListTile(
-                    onTap: () {},
+                    onTap: () {
+                      Routes.instance.push(widget: const ChangePassword(), context: context);
+                    },
                     leading: Icon(Icons.change_circle_outlined),
                     title: Text("Cambiar contraseña"),
                   ),

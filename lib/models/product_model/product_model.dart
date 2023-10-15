@@ -11,7 +11,6 @@ class ProductModel {
     required this.name,
     required this.price,
     required this.description,
-    required this.status,
     required this.isFavourite,
     this.qty});
 
@@ -21,7 +20,6 @@ class ProductModel {
   String description;
   bool isFavourite;
   double price;
-  String status;
   int? qty;
 
   factory ProductModel.fromJson(Map<String, dynamic> json) =>
@@ -33,7 +31,6 @@ class ProductModel {
         isFavourite: false,
         qty: json["qty"],
         price: double.parse(json["price"].toString()),
-        status: json["status"],
       );
 
   Map<String, dynamic> toJson() =>
@@ -43,7 +40,7 @@ class ProductModel {
         "image": image,
         "description": description,
         "price": price,
-        "status": status,
+
         "isFavourite": isFavourite,
         "qty": qty,
       };
@@ -58,7 +55,7 @@ class ProductModel {
           name: name,
           price: price,
           description: description,
-          status: status,
+
           qty: qty??this.qty,
           isFavourite: isFavourite,
       );

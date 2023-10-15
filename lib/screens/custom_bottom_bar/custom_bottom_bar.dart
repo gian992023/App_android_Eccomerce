@@ -5,6 +5,8 @@ import 'package:conexion/screens/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
+import '../order_screen/order_screen.dart';
+
 class CustomBottomBar extends StatefulWidget {
   const CustomBottomBar({
     final Key? key,
@@ -21,7 +23,7 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
   List<Widget> _buildScreens() => [
         const Home(),
         const CartScreen(),
-        const FavouriteScreen(),
+        const OrderScreen(),
         const AccountScreen(),
       ];
 
@@ -41,9 +43,9 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
           inactiveColorPrimary: Colors.white,
         ),
         PersistentBottomNavBarItem(
-          icon: const Icon(Icons.favorite),
-          inactiveIcon:const Icon(Icons.favorite_border),
-          title: "Favoritos",
+          icon: const Icon(Icons.circle_rounded),
+          inactiveIcon:const Icon(Icons.circle_outlined),
+          title: "Ordenes",
           activeColorPrimary: Colors.white,
           inactiveColorPrimary: Colors.white,
         ),

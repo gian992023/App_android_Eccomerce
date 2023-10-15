@@ -13,6 +13,7 @@ import 'package:flutter/cupertino.dart';
 class AppProvider with ChangeNotifier {
   //CARTA DE CARRITO//
   final List<ProductModel> _cartProductList = [];
+  final List<ProductModel> _buyProductList = [];
   UserModel? _userModel;
 
   UserModel get getUserInformation => _userModel!;
@@ -78,5 +79,26 @@ class AppProvider with ChangeNotifier {
     showMessage("Perfil actualizado exitosamente");
     notifyListeners();
   }
-////
+////TOTALL////
+double totalPrice(){
+    double totalPrice = 0.0;
+    for (var element in _cartProductList){
+      totalPrice += element.price * element.qty!;
+
+    }
+    return totalPrice;
+}
+void updateQty(ProductModel productModel, int qty){
+    int index = _cartProductList.indexOf(productModel);
+    _cartProductList[index].qty = qty;
+    notifyListeners();
+
+}
+////Vender producto
+
+  void addBuyProduct(ProductModel model) {
+    _buyProductList.add(model);
+    notifyListeners();
+  }
+  List<ProductModel> get getBuyProductList => _buyProductList;
 }

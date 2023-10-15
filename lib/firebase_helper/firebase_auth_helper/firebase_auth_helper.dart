@@ -15,8 +15,8 @@ class FirebaseAuthHelper {
 
   Stream<User?> get getAuthChange => _auth.authStateChanges();
 
-  Future<bool> login(String email, String password,
-      BuildContext context) async {
+  Future<bool> login(
+      String email, String password, BuildContext context) async {
     try {
       showLoaderDialog(context);
       await _auth.signInWithEmailAndPassword(email: email, password: password);
@@ -29,8 +29,8 @@ class FirebaseAuthHelper {
     }
   }
 
-  Future<bool> singUp(String name, String email, String password,
-      BuildContext context) async {
+  Future<bool> singUp(
+      String name, String email, String password, BuildContext context) async {
     try {
       showLoaderDialog(context);
       UserCredential userCredential = await _auth
@@ -51,17 +51,17 @@ class FirebaseAuthHelper {
     await _auth.signOut();
   }
 
-  Future<bool> changePassword( String password,
-      BuildContext context) async {
+  Future<bool> changePassword(String password, BuildContext context) async {
     try {
       showLoaderDialog(context);
       _auth.currentUser!.updatePassword(password);
       //UserCredential userCredential = await _auth
-        //  .createUserWithEmailAndPassword(email: email, password: password);
+      //  .createUserWithEmailAndPassword(email: email, password: password);
       //UserModel userModel = UserModel(
-        //  id: userCredential.user!.uid, name: name, email: email, image: null);
+      //  id: userCredential.user!.uid, name: name, email: email, image: null);
       //_firestore.collection("users").doc(userModel.id).set(userModel.toJson());
       Navigator.of(context, rootNavigator: true).pop();
+      showMessage("Constraseña actualizada");
       Navigator.of(context).pop();
       return true;
     } on FirebaseAuthException catch (error) {
