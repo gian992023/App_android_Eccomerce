@@ -63,12 +63,15 @@ class _SingleCartItemState extends State<SingleCartItem> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            FittedBox(
+                              child:
                             Text(
                               widget.singleProduct.name,
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                               ),
+                            ),
                             ),
                             Row(
                               children: [

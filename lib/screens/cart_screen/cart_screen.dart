@@ -1,4 +1,6 @@
+import 'package:conexion/constants/constants.dart';
 import 'package:conexion/constants/routes.dart';
+import 'package:conexion/screens/cart_item_checkout/cart_item_checkout.dart';
 import 'package:conexion/screens/cart_screen/widgets/single_cart_item.dart';
 import 'package:conexion/screens/check_out/check_out.dart';
 import 'package:flutter/cupertino.dart';
@@ -47,7 +49,15 @@ class _CartScreenState extends State<CartScreen> {
               PrimaryButton(
                 title: "Hacer pago",
                 onPressed: () {
-                  //Routes.instance.push(widget: Checkout(), context: context);
+                  appProvider.clearBuyProduct();
+                  appProvider.addBuyProductCartList();
+                  appProvider.clearCart();
+                  if (appProvider.getBuyProductList.isEmpty) {
+                    showMessage("Carta esta vacia");
+                  } else {
+                    Routes.instance.push(
+                        widget: const CartItemCheckout(), context: context);
+                  }
                 },
               ),
             ],

@@ -54,8 +54,9 @@ class AppProvider with ChangeNotifier {
 
   void updateUserInfoFirebase(
       BuildContext context, UserModel userModel, File? file) async {
-    showLoaderDialog(context);
+
     if (file == null) {
+      showLoaderDialog(context);
       _userModel = userModel;
       await FirebaseFirestore.instance
           .collection("users")
@@ -64,6 +65,7 @@ class AppProvider with ChangeNotifier {
       Navigator.of(context, rootNavigator: true).pop();
       Navigator.of(context).pop();
     } else {
+      showLoaderDialog(context);
       String imageUrl =
           await FirebaseStorageHelper.instance.uploadUserImage(file);
       _userModel = userModel.copyWith(image: imageUrl);
@@ -79,26 +81,43 @@ class AppProvider with ChangeNotifier {
     showMessage("Perfil actualizado exitosamente");
     notifyListeners();
   }
-////TOTALL////
-double totalPrice(){
-    double totalPrice = 0.0;
-    for (var element in _cartProductList){
-      totalPrice += element.price * element.qty!;
 
+////TOTALL////
+  double totalPrice() {
+    double totalPrice = 0.0;
+    for (var element in _cartProductList) {
+      totalPrice += element.price * element.qty!;
     }
     return totalPrice;
-}
-void updateQty(ProductModel productModel, int qty){
+  }
+
+  void updateQty(ProductModel productModel, int qty) {
     int index = _cartProductList.indexOf(productModel);
     _cartProductList[index].qty = qty;
     notifyListeners();
+  }
 
-}
 ////Vender producto
 
   void addBuyProduct(ProductModel model) {
     _buyProductList.add(model);
     notifyListeners();
   }
+
+  void addBuyProductCartList() {
+    _buyProductList.addAll(_cartProductList);
+    notifyListeners();
+  }
+
+  void clearCart() {
+    _cartProductList.clear();
+    notifyListeners();
+  }
+
+  void clearBuyProduct() {
+    _buyProductList.clear();
+    notifyListeners();
+  }
+
   List<ProductModel> get getBuyProductList => _buyProductList;
 }

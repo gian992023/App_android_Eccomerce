@@ -52,15 +52,15 @@ TextEditingController textEditingController=TextEditingController();
                 onPressed: () {
                   takePicture();
                 },
-                child: CircleAvatar(
-                    radius: 70, child: const Icon(Icons.camera_alt)),
+                child: const CircleAvatar(
+                    radius: 55, child:  Icon(Icons.camera_alt)),
               )
             : CupertinoButton(
                 onPressed: () {
                   takePicture();
                 },
                 child: CircleAvatar(
-                    backgroundImage: FileImage(image!), radius: 70),
+                    backgroundImage: FileImage(image!), radius: 60),
               ),
         SizedBox(
           height: 12,

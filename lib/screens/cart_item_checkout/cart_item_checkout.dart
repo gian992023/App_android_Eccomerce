@@ -1,7 +1,7 @@
 import 'package:conexion/constants/routes.dart';
 import 'package:conexion/firebase_helper/firebase_firestore_helper/firebase_firestore.dart';
 import 'package:conexion/firebase_helper/firebase_storage_helper/firebase_storage_helper.dart';
-import 'package:conexion/models/product_model/product_model.dart';
+
 import 'package:conexion/screens/custom_bottom_bar/custom_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -9,16 +9,15 @@ import 'package:provider/provider.dart';
 import '../../provider/app_provider.dart';
 import '../../widgets/primary_button/primary_button.dart';
 
-class Checkout extends StatefulWidget {
-  final ProductModel singleProduct;
+class CartItemCheckout extends StatefulWidget {
 
-  const Checkout({super.key, required this.singleProduct});
+  const CartItemCheckout({super.key, });
 
   @override
-  State<Checkout> createState() => _CheckoutState();
+  State<CartItemCheckout> createState() => _CartItemCheckoutState();
 }
 
-class _CheckoutState extends State<Checkout> {
+class _CartItemCheckoutState extends State<CartItemCheckout> {
   int groupValue = 1;
 
   @override
@@ -49,7 +48,7 @@ class _CheckoutState extends State<Checkout> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
                 border:
-                    Border.all(color: Theme.of(context).primaryColor, width: 3),
+                Border.all(color: Theme.of(context).primaryColor, width: 3),
               ),
               width: double.infinity,
               child: Row(
@@ -64,11 +63,11 @@ class _CheckoutState extends State<Checkout> {
                     },
                   ),
                   const Icon(Icons.money),
-                  const SizedBox(
+                   const SizedBox(
                     width: 12,
                   ),
                   const Text(
-                    "Pagar en efectivo",
+                    "Pago en efectivo",
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ],
@@ -82,7 +81,7 @@ class _CheckoutState extends State<Checkout> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
                 border:
-                    Border.all(color: Theme.of(context).primaryColor, width: 3),
+                Border.all(color: Theme.of(context).primaryColor, width: 3),
               ),
               width: double.infinity,
               child: Row(
@@ -116,13 +115,13 @@ class _CheckoutState extends State<Checkout> {
             PrimaryButton(
               title: "Continuar",
               onPressed: () async {
-                appProvider.clearBuyProduct();
-                appProvider.addBuyProduct(widget.singleProduct);
+
                 bool value = await FirebaseFirestoreHelper.instance
                     .uploadOrderedProductFirebase(
-                  appProvider.getBuyProductList,
-                  context, groupValue==1?"Pago en efectivo": "Pago"
+                    appProvider.getBuyProductList,
+                    context, groupValue==1?"Pago en efectivo": "Pago"
                 );
+                appProvider.clearBuyProduct();
                 if (value) {
                   Future.delayed(const Duration(seconds: 2), () {
                     Routes.instance.push(

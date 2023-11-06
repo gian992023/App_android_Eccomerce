@@ -153,9 +153,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                         ProductModel productModel =
                             widget.singleProduct.copyWith(qty: qty);
                         Routes.instance.push(
-                            widget: Checkout(
-                              singleProduct: productModel,
-                            ),
+                            widget: Checkout(singleProduct: productModel),
                             context: context);
                       },
                       child: const Text("Comprar"),
