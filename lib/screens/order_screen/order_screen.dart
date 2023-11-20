@@ -34,7 +34,9 @@ class OrderScreen extends StatelessWidget {
               child: Text("No se encontraron ordenes"),
             );
           }
-          return ListView.builder(
+          return  Padding(padding: const EdgeInsets.only(bottom: 50),
+            child:
+            ListView.builder(
             itemCount: snapshot.data!.length,
             padding: const EdgeInsets.all(12),
             itemBuilder: (context, index) {
@@ -180,6 +182,7 @@ class OrderScreen extends StatelessWidget {
                 ),
               );
             },
+            ),
           );
         },
       ),

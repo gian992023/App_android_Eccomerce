@@ -6,10 +6,13 @@ import 'package:conexion/screens/auth_ui/bienvenido/bienvenido.dart';
 import 'package:conexion/screens/custom_bottom_bar/custom_bottom_bar.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Stripe.publishableKey =
+      "pk_test_51OAi11FgSZnDlJbfCDUKMZVdz25KcCOAQwIKL8Ll6KjA1dVw6IbGEMimhmrzKdxrvA0wNrrN7NBla94wqkn0vYGY00gMtS8VjU";
   await Firebase.initializeApp(
     options: DefaultFirebaseConfig.platformOptions,
   );

@@ -44,6 +44,20 @@ class _HomeState extends State<Home> {
     });
   }
 
+  TextEditingController search = TextEditingController();
+  List<ProductModel> searchList = [];
+
+  void searchProducts(String value) {
+    searchList = productModelList
+        .where((element) =>
+            element.name.toLowerCase().contains(value.toLowerCase()) )
+        .toList();
+    print(searchList.length);
+    setState(() {
+
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,6 +81,10 @@ class _HomeState extends State<Home> {
                       children: [
                         const TopTitles(subtitle: "", title: "Mi comercio"),
                         TextFormField(
+                          controller: search,
+                          onChanged: (String value){
+                            searchProducts(value);
+                          },
                           decoration:
                               const InputDecoration(hintText: "Search..."),
                         ),
@@ -122,7 +140,7 @@ class _HomeState extends State<Home> {
                   const SizedBox(
                     height: 12,
                   ),
-                  const Padding(
+                  !isSearched()? const Padding(
                     padding: EdgeInsets.only(top: 12.0, left: 12),
                     child: Text(
                       "Mas vendidos",
@@ -131,11 +149,75 @@ class _HomeState extends State<Home> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ),
+                  ):SizedBox.fromSize(),
                   const SizedBox(
                     height: 12,
                   ),
-                  productModelList.isEmpty
+                  search.text.isNotEmpty && searchList.isEmpty?Center(child: Text("Producto no encontrado"),):searchList.isNotEmpty?Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: GridView.builder(
+                        padding: EdgeInsets.only(bottom: 50),
+                        shrinkWrap: true,
+                        primary: false,
+                        itemCount: searchList.length,
+                        gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            mainAxisSpacing: 20,
+                            crossAxisSpacing: 30,
+                            childAspectRatio: 0.7,
+                            crossAxisCount: 2),
+                        itemBuilder: (ctx, index) {
+                          ProductModel singleProduct =
+                          searchList[index];
+                          return Container(
+                            decoration: BoxDecoration(
+                                color: Colors.red.withOpacity(0.5),
+                                borderRadius: BorderRadius.circular(8)),
+                            child: Column(
+                              children: [
+                                const SizedBox(
+                                  height: 12,
+                                ),
+                                Image.network(
+                                  singleProduct.image,
+                                  height: 100,
+                                  width: 100,
+                                ),
+                                const SizedBox(
+                                  height: 12,
+                                ),
+                                Text(
+                                  singleProduct.name,
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text("price: \$${singleProduct.price}"),
+                                const SizedBox(
+                                  height: 30,
+                                ),
+                                SizedBox(
+                                  height: 45,
+                                  width: 120,
+                                  child: OutlinedButton(
+                                    onPressed: () {
+                                      Routes.instance.push(
+                                          widget: ProductDetails(
+                                              singleProduct:
+                                              singleProduct),
+                                          context: context);
+                                    },
+                                    child: const Text(
+                                      "Buy",
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }),
+                  ): productModelList.isEmpty
                       ? const Center(
                           child: Text("Sin productos"),
                         )
@@ -211,5 +293,16 @@ class _HomeState extends State<Home> {
               ),
             ),
     );
+  }
+  bool isSearched(){
+    if (search.text.isNotEmpty && searchList.isEmpty){
+      return true;
+    }else if(search.text.isEmpty && searchList.isNotEmpty) {
+      return false;
+    } else if (searchList.isNotEmpty){
+      return true;
+    } else {
+      return false;
+    }
   }
 }

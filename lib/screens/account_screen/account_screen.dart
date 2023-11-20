@@ -3,6 +3,7 @@ import 'package:conexion/firebase_helper/firebase_auth_helper/firebase_auth_help
 import 'package:conexion/screens/change_password/change_password.dart';
 import 'package:conexion/screens/edit_profile/edit_profile.dart';
 import 'package:conexion/screens/favourite_screen/favourite_screen.dart';
+import 'package:conexion/screens/order_screen/order_screen.dart';
 import 'package:conexion/widgets/primary_button/primary_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -36,7 +37,6 @@ class _AccountScreenState extends State<AccountScreen> {
       ),
       body: Column(
         children: [
-
           Expanded(
             child: Column(
               children: [
@@ -56,14 +56,12 @@ class _AccountScreenState extends State<AccountScreen> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-
                 Text(
                   appProvider.getUserInformation.email,
                 ),
                 SizedBox(
                   height: 8.9,
                 ),
-
                 SizedBox(
                     width: 140,
                     height: 30,
@@ -76,25 +74,24 @@ class _AccountScreenState extends State<AccountScreen> {
                     ))
               ],
             ),
-
           ),
-
           Expanded(
-
             flex: 2,
             child: Container(
-
               child: Column(
                 children: [
-
                   ListTile(
-                    onTap: () {},
+                    onTap: () {
+                      Routes.instance
+                          .push(widget: const OrderScreen(), context: context);
+                    },
                     leading: Icon(Icons.shopping_bag_outlined),
                     title: Text("Tus pedidos"),
                   ),
                   ListTile(
                     onTap: () {
-                      Routes.instance.push(widget: const FavouriteScreen(), context: context);
+                      Routes.instance.push(
+                          widget: const FavouriteScreen(), context: context);
                     },
                     leading: Icon(Icons.favorite_outline),
                     title: Text("Favoritos"),
@@ -106,7 +103,8 @@ class _AccountScreenState extends State<AccountScreen> {
                   ),
                   ListTile(
                     onTap: () {
-                      Routes.instance.push(widget: const ChangePassword(), context: context);
+                      Routes.instance.push(
+                          widget: const ChangePassword(), context: context);
                     },
                     leading: Icon(Icons.change_circle_outlined),
                     title: Text("Cambiar contraseña"),
