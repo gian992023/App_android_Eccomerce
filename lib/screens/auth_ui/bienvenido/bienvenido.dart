@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 
 import '../../../widgets/primary_button/primary_button.dart';
 import '../login/login.dart';
-
+//Clase vista de bienvenida login
 class Bienvenido extends StatelessWidget {
   const Bienvenido({super.key});
 

@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 
 import '../../provider/app_provider.dart';
 import '../../widgets/primary_button/primary_button.dart';
-
+//Clase creacion widget carititemcheckout
 class CartItemCheckout extends StatefulWidget {
   const CartItemCheckout({
     super.key,

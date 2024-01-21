@@ -36,7 +36,8 @@ class _SignUpState extends State<SignUp> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const TopTitles(
-                subtitle: "Haz parte de Compy", title: "Crear usuario"),
+                subtitle: "Haz parte de Compy",
+                title: "Crear usuario empresarial"),
             const SizedBox(
               height: 46,
             ),
@@ -98,7 +99,7 @@ class _SignUpState extends State<SignUp> {
               height: 36,
             ),
             PrimaryButton(
-              title: "Crear cuenta",
+              title: "Crear cuentas",
               onPressed: () async {
                 bool isValidated = singUpValidation(
                     email.text, password.text, name.text, phone.text);

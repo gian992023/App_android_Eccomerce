@@ -9,14 +9,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../provider/app_provider.dart';
-
+//Clase, creacion del estado de accountScreen
 class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key});
 
   @override
   State<AccountScreen> createState() => _AccountScreenState();
 }
-
+//Clase Account Screen
 class _AccountScreenState extends State<AccountScreen> {
   @override
   Widget build(BuildContext context) {

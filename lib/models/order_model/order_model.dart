@@ -5,7 +5,7 @@ import 'package:conexion/models/product_model/product_model.dart';
 
 
 
-
+//clase modelo de informacion de ordenes de usuarios
 class OrderModel {
   OrderModel({
     required this.totalPrice,

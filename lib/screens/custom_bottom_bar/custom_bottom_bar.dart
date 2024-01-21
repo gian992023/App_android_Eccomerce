@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import '../order_screen/order_screen.dart';
+import '../register_products/register_products.dart';
 
 class CustomBottomBar extends StatefulWidget {
   const CustomBottomBar({
@@ -22,7 +23,7 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
 
   List<Widget> _buildScreens() => [
         const Home(),
-        const CartScreen(),
+        const RegisterProduct(),
         const OrderScreen(),
         const AccountScreen(),
       ];
@@ -38,7 +39,7 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
         PersistentBottomNavBarItem(
           icon: const Icon(Icons.shopping_cart),
           inactiveIcon:const Icon(Icons.shopping_cart_outlined) ,
-          title: "Carrito",
+          title: "Productos",
           activeColorPrimary: Colors.white,
           inactiveColorPrimary: Colors.white,
         ),

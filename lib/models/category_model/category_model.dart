@@ -4,7 +4,7 @@ CategoryModel userModelFromJson(String str) =>
     CategoryModel.fromJson(json.decode(str));
 
 String CategoryModelToJson(CategoryModel data) => json.encode(data.toJson());
-
+//Clase modelo de informacion manejada en categoria
 class CategoryModel {
   CategoryModel({
     required this.image,

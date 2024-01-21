@@ -4,7 +4,7 @@ ProductModel userModelFromJson(String str) =>
     ProductModel.fromJson(json.decode(str));
 
 String ProductModelToJson(ProductModel data) => json.encode(data.toJson());
-
+//Clase modelo de informacion de productos para clientes
 class ProductModel {
   ProductModel({required this.image,
     required this.id,

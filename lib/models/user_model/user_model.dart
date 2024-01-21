@@ -4,7 +4,7 @@ UserModel userModelFromJson(String str) =>
     UserModel.fromJson(json.decode(str));
 
 String userModelToJson(UserModel data) => json.encode(data.toJson());
-
+//Clase modelo de informacion de usuario Empresarial
 class UserModel {
   UserModel({
     this.image,

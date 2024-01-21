@@ -19,7 +19,7 @@ class Login extends StatefulWidget {
   @override
   State<Login> createState() => _LoginState();
 }
-
+//Clase de Login
 class _LoginState extends State<Login> {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();

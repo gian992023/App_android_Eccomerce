@@ -9,7 +9,7 @@ import 'package:conexion/firebase_helper/firebase_storage_helper/firebase_storag
 import 'package:conexion/models/product_model/product_model.dart';
 import 'package:conexion/models/user_model/user_model.dart';
 import 'package:flutter/cupertino.dart';
-
+//Clase proveedor de informacion entre firestore y vista app
 class AppProvider with ChangeNotifier {
   //CARTA DE CARRITO//
   final List<ProductModel> _cartProductList = [];
@@ -59,7 +59,7 @@ class AppProvider with ChangeNotifier {
       showLoaderDialog(context);
       _userModel = userModel;
       await FirebaseFirestore.instance
-          .collection("users")
+          .collection("businessusers")
           .doc(userModel!.id)
           .set(userModel!.toJson());
       Navigator.of(context, rootNavigator: true).pop();
@@ -70,7 +70,7 @@ class AppProvider with ChangeNotifier {
           await FirebaseStorageHelper.instance.uploadUserImage(file);
       _userModel = userModel.copyWith(image: imageUrl);
       await FirebaseFirestore.instance
-          .collection("users")
+          .collection("businessusers")
           .doc(_userModel!.id)
           .set(_userModel!.toJson());
 
