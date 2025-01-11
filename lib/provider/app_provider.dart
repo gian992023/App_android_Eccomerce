@@ -14,6 +14,7 @@ class AppProvider with ChangeNotifier {
   //CARTA DE CARRITO//
   final List<ProductModel> _cartProductList = [];
   final List<ProductModel> _buyProductList = [];
+
   UserModel? _userModel;
 
   UserModel get getUserInformation => _userModel!;
@@ -127,4 +128,5 @@ class AppProvider with ChangeNotifier {
   }
 
   List<ProductModel> get getBuyProductList => _buyProductList;
+
 }

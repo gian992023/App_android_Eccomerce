@@ -39,16 +39,15 @@ class _AccountScreenState extends State<AccountScreen> {
         children: [
           Expanded(
             child: Column(
-              children: [
-                appProvider.getUserInformation.image == null
-                    ? const Icon(
-                        Icons.person_outline,
-                        size: 120,
-                      )
-                    : CircleAvatar(
-                        backgroundImage:
-                            NetworkImage(appProvider.getUserInformation.image!),
-                        radius: 70),
+              children: [ appProvider.getUserInformation.image == null
+                  ? const Icon(
+                Icons.person_outline,
+                size: 120,
+              )
+                  : CircleAvatar(
+                  backgroundImage:
+                  NetworkImage(appProvider.getUserInformation.image!),
+                  radius: 70),
                 Text(
                   appProvider.getUserInformation.name,
                   style: TextStyle(
@@ -59,6 +58,10 @@ class _AccountScreenState extends State<AccountScreen> {
                 Text(
                   appProvider.getUserInformation.email,
                 ),
+                SizedBox(
+                  height: 8.9,
+                ),
+
                 SizedBox(
                   height: 8.9,
                 ),

@@ -71,7 +71,7 @@ class FirebaseFirestoreHelper {
   }
 
   Future<bool> uploadOrderedProductFirebase(
-      List<ProductModel> list, BuildContext context, String payment) async {
+      List<ProductModel> list, BuildContext context, String payment, String uniqueProductId) async {
     try {
       showLoaderDialog(context);
       double totalPrice = 0.0;
@@ -87,18 +87,20 @@ class FirebaseFirestoreHelper {
 
       admin.set({
         "products": list.map((e) => e.toJson()),
-        "status": "Pending",
+        "status": "Pendiente",
         "totalPrice": totalPrice,
         "payment": payment,
         "orderId": admin.id,
+        "idventa": uniqueProductId
       });
 
       documentReference.set({
         "products": list.map((e) => e.toJson()),
-        "status": "Pending",
+        "status": "Pendiente",
         "totalPrice": totalPrice,
         "payment": payment,
         "orderId": documentReference.id,
+        "idventa": uniqueProductId
       });
       Navigator.of(context, rootNavigator: true).pop();
       showMessage("Orden exitosa");
@@ -140,4 +142,32 @@ class FirebaseFirestoreHelper {
       });
     }
   }
+  Future<List<ProductModel>> getUserProducts() async {
+    try {
+      String userId = FirebaseAuth.instance.currentUser!.uid;
+      QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore.instance
+          .collection("userProducts")
+          .doc(userId)
+          .collection("categories")
+          .get();
+      List<ProductModel> userProductsList = [];
+
+      for (QueryDocumentSnapshot<Map<String, dynamic>> doc in querySnapshot.docs) {
+        QuerySnapshot<Map<String, dynamic>> productsSnapshot =
+        await doc.reference.collection("products").get();
+        List<ProductModel> products = productsSnapshot.docs
+            .map((e) => ProductModel.fromJson(e.data()))
+            .toList();
+        userProductsList.addAll(products);
+      }
+
+      return userProductsList;
+    } catch (e) {
+      showMessage(e.toString());
+      return [];
+    }
+  }
 }
+
+
+

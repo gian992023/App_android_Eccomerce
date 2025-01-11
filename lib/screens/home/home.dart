@@ -27,6 +27,7 @@ class _HomeState extends State<Home> {
   void initState() {
     AppProvider appProvider = Provider.of<AppProvider>(context, listen: false);
     appProvider.getUserInfoFirebase();
+
     getCategoryList();
     super.initState();
   }
@@ -50,12 +51,10 @@ class _HomeState extends State<Home> {
   void searchProducts(String value) {
     searchList = productModelList
         .where((element) =>
-            element.name.toLowerCase().contains(value.toLowerCase()) )
+            element.name.toLowerCase().contains(value.toLowerCase()))
         .toList();
     print(searchList.length);
-    setState(() {
-
-    });
+    setState(() {});
   }
 
   @override
@@ -82,7 +81,7 @@ class _HomeState extends State<Home> {
                         const TopTitles(subtitle: "", title: "Mi comercio"),
                         TextFormField(
                           controller: search,
-                          onChanged: (String value){
+                          onChanged: (String value) {
                             searchProducts(value);
                           },
                           decoration:
@@ -140,152 +139,232 @@ class _HomeState extends State<Home> {
                   const SizedBox(
                     height: 12,
                   ),
-                  !isSearched()? const Padding(
-                    padding: EdgeInsets.only(top: 12.0, left: 12),
-                    child: Text(
-                      "Mas vendidos",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ):SizedBox.fromSize(),
+                  !isSearched()
+                      ? const Padding(
+                          padding: EdgeInsets.only(top: 12.0, left: 12),
+                          child: Text(
+                            "Mas vendidos",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        )
+                      : SizedBox.fromSize(),
                   const SizedBox(
                     height: 12,
                   ),
-                  search.text.isNotEmpty && searchList.isEmpty?Center(child: Text("Producto no encontrado"),):searchList.isNotEmpty?Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: GridView.builder(
-                        padding: EdgeInsets.only(bottom: 50),
-                        shrinkWrap: true,
-                        primary: false,
-                        itemCount: searchList.length,
-                        gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                            mainAxisSpacing: 20,
-                            crossAxisSpacing: 30,
-                            childAspectRatio: 0.7,
-                            crossAxisCount: 2),
-                        itemBuilder: (ctx, index) {
-                          ProductModel singleProduct =
-                          searchList[index];
-                          return Container(
-                            decoration: BoxDecoration(
-                                color: Colors.red.withOpacity(0.5),
-                                borderRadius: BorderRadius.circular(8)),
-                            child: Column(
-                              children: [
-                                const SizedBox(
-                                  height: 12,
-                                ),
-                                Image.network(
-                                  singleProduct.image,
-                                  height: 100,
-                                  width: 100,
-                                ),
-                                const SizedBox(
-                                  height: 12,
-                                ),
-                                Text(
-                                  singleProduct.name,
-                                  style: const TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Text("price: \$${singleProduct.price}"),
-                                const SizedBox(
-                                  height: 30,
-                                ),
-                                SizedBox(
-                                  height: 45,
-                                  width: 120,
-                                  child: OutlinedButton(
-                                    onPressed: () {
-                                      Routes.instance.push(
-                                          widget: ProductDetails(
-                                              singleProduct:
-                                              singleProduct),
-                                          context: context);
-                                    },
-                                    child: const Text(
-                                      "Buy",
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        }),
-                  ): productModelList.isEmpty
-                      ? const Center(
-                          child: Text("Sin productos"),
+                  search.text.isNotEmpty && searchList.isEmpty
+                      ? Center(
+                          child: Text("Producto no encontrado"),
                         )
-                      : Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: GridView.builder(
-                              padding: EdgeInsets.only(bottom: 50),
-                              shrinkWrap: true,
-                              primary: false,
-                              itemCount: productModelList.length,
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                      mainAxisSpacing: 20,
-                                      crossAxisSpacing: 30,
-                                      childAspectRatio: 0.7,
-                                      crossAxisCount: 2),
-                              itemBuilder: (ctx, index) {
-                                ProductModel singleProduct =
-                                    productModelList[index];
-                                return Container(
-                                  decoration: BoxDecoration(
-                                      color: Colors.red.withOpacity(0.5),
-                                      borderRadius: BorderRadius.circular(8)),
-                                  child: Column(
-                                    children: [
-                                      const SizedBox(
-                                        height: 12,
-                                      ),
-                                      Image.network(
-                                        singleProduct.image,
-                                        height: 100,
-                                        width: 100,
-                                      ),
-                                      const SizedBox(
-                                        height: 12,
-                                      ),
-                                      Text(
-                                        singleProduct.name,
-                                        style: const TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      Text("price: \$${singleProduct.price}"),
-                                      const SizedBox(
-                                        height: 30,
-                                      ),
-                                      SizedBox(
-                                        height: 45,
-                                        width: 120,
-                                        child: OutlinedButton(
-                                          onPressed: () {
-                                            Routes.instance.push(
-                                                widget: ProductDetails(
-                                                    singleProduct:
-                                                        singleProduct),
-                                                context: context);
-                                          },
-                                          child: const Text(
-                                            "Buy",
+                      : searchList.isNotEmpty
+                          ? Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: GridView.builder(
+                                  padding: EdgeInsets.only(bottom: 50),
+                                  shrinkWrap: true,
+                                  primary: false,
+                                  itemCount: searchList.length,
+                                  gridDelegate:
+                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                          mainAxisSpacing: 20,
+                                          crossAxisSpacing: 30,
+                                          childAspectRatio: 0.7,
+                                          crossAxisCount: 2),
+                                  itemBuilder: (ctx, index) {
+                                    ProductModel singleProduct =
+                                        searchList[index];
+                                    return Container(
+                                      decoration: BoxDecoration(
+                                          color: Colors.red.withOpacity(0.5),
+                                          borderRadius:
+                                              BorderRadius.circular(8)),
+                                      child: Column(
+                                        children: [
+                                          const SizedBox(
+                                            height: 12,
                                           ),
-                                        ),
+                                          Image.network(
+                                            singleProduct.image,
+                                            height: 100,
+                                            width: 100,
+                                          ),
+                                          const SizedBox(
+                                            height: 12,
+                                          ),
+                                          Text(
+                                            singleProduct.name,
+                                            style: const TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          Text(
+                                              "price: \$${singleProduct.price}"),
+                                          Text(
+                                            singleProduct.qty == 0 ? 'Agotado' : 'Cantidad: ${singleProduct.qty}',
+                                            style: const TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 45,
+                                            width: 120,
+                                            child: OutlinedButton(
+                                              onPressed: () {
+                                                if (singleProduct.qty == 0) {
+                                                  // Mostrar un alert indicando que el inventario está agotado
+                                                  showDialog(
+                                                    context: context,
+                                                    builder: (BuildContext context) {
+                                                      return AlertDialog(
+                                                        title: const Text("Inventario Agotado"),
+                                                        content: const Text("Lo sentimos, este producto está agotado."),
+                                                        actions: <Widget>[
+                                                          TextButton(
+                                                            onPressed: () {
+                                                              Navigator.of(context).pop();
+                                                            },
+                                                            child: const Text("Aceptar"),
+                                                          ),
+                                                        ],
+                                                      );
+                                                    },
+                                                  );
+                                                } else {
+                                                  // El inventario no está agotado, navegar a ProductDetails
+                                                  Routes.instance.push(
+                                                    widget: ProductDetails(singleProduct: singleProduct),
+                                                    context: context,
+                                                  );
+                                                }
+                                              },
+                                              child: const Text(
+                                                "Buy",
+                                              ),
+                                            ),
+
+                                          ),
+                                        ],
                                       ),
-                                    ],
-                                  ),
-                                );
-                              }),
-                        ),
+                                    );
+                                  }),
+                            )
+                          : productModelList.isEmpty
+                              ? const Center(
+                                  child: Text("Sin productos"),
+                                )
+                              : Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: GridView.builder(
+                                      padding: EdgeInsets.only(bottom: 50),
+                                      shrinkWrap: true,
+                                      primary: false,
+                                      itemCount: productModelList.length,
+                                      gridDelegate:
+                                          const SliverGridDelegateWithFixedCrossAxisCount(
+                                              mainAxisSpacing: 20,
+                                              crossAxisSpacing: 30,
+                                              childAspectRatio: 0.65,
+                                              crossAxisCount: 2),
+                                      itemBuilder: (ctx, index) {
+                                        ProductModel singleProduct =
+                                            productModelList[index];
+                                        return Container(
+                                          decoration: BoxDecoration(
+                                              color:
+                                                  Colors.red.withOpacity(0.5),
+                                              borderRadius:
+                                                  BorderRadius.circular(8)),
+                                          child: Column(
+                                            children: [
+                                              const SizedBox(
+                                                height: 12,
+                                              ),
+                                              Image.network(
+                                                singleProduct.image,
+                                                height: 100,
+                                                width: 100,
+                                              ),
+                                              const SizedBox(
+                                                height: 12,
+                                              ),
+                                              Text(
+                                                singleProduct.name,
+                                                style: const TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                height: 5,
+                                              ),
+                                              Text(
+                                                "price: \$${singleProduct.price}",
+                                                style: const TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                height: 5,
+                                              ),
+                                              Text(
+                                                singleProduct.qty == 0 ? 'Agotado' : 'Cantidad: ${singleProduct.qty}',
+                                                style: const TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                height: 15,
+                                              ),
+                                              SizedBox(
+                                                height: 45,
+                                                width: 120,
+                                                child: OutlinedButton(
+                                                  onPressed: () {
+                                                    if (singleProduct.qty == 0) {
+                                                      // Mostrar un alert indicando que el inventario está agotado
+                                                      showDialog(
+                                                        context: context,
+                                                        builder: (BuildContext context) {
+                                                          return AlertDialog(
+                                                            title: const Text("Inventario Agotado"),
+                                                            content: const Text("Lo sentimos, este producto está agotado."),
+                                                            actions: <Widget>[
+                                                              TextButton(
+                                                                onPressed: () {
+                                                                  Navigator.of(context).pop();
+                                                                },
+                                                                child: const Text("Aceptar"),
+                                                              ),
+                                                            ],
+                                                          );
+                                                        },
+                                                      );
+                                                    } else {
+                                                      // El inventario no está agotado, navegar a ProductDetails
+                                                      Routes.instance.push(
+                                                        widget: ProductDetails(singleProduct: singleProduct),
+                                                        context: context,
+                                                      );
+                                                    }
+                                                  },
+                                                  child: const Text(
+                                                    "Buy",
+                                                  ),
+                                                ),
+
+                                              ),
+
+                                            ],
+                                          ),
+                                        );
+                                      }),
+                                ),
                   const SizedBox(
                     height: 12,
                   )
@@ -294,12 +373,13 @@ class _HomeState extends State<Home> {
             ),
     );
   }
-  bool isSearched(){
-    if (search.text.isNotEmpty && searchList.isEmpty){
+
+  bool isSearched() {
+    if (search.text.isNotEmpty && searchList.isEmpty) {
       return true;
-    }else if(search.text.isEmpty && searchList.isNotEmpty) {
+    } else if (search.text.isEmpty && searchList.isNotEmpty) {
       return false;
-    } else if (searchList.isNotEmpty){
+    } else if (searchList.isNotEmpty) {
       return true;
     } else {
       return false;

@@ -33,12 +33,12 @@ static  StripeHelper instance = StripeHelper();
               googlePay: gpay
           )).then((value) => {});
       //Paso tres: Display payment sheet
-      displayPaymentSheet(context);
+      //displayPaymentSheet(context);
 
     } catch (err) {}
   }
 
-  displayPaymentSheet(BuildContext context) async {
+  /*displayPaymentSheet(BuildContext context) async {
     AppProvider appProvider = Provider.of<AppProvider>(context, listen: false);
     try {
       await Stripe.instance.presentPaymentSheet().then((value) async {
@@ -59,7 +59,7 @@ static  StripeHelper instance = StripeHelper();
       print('$e');
 
     }
-  }
+  }*/
 
   createPaymentIntent(String amount, String currency) async {
     try {
