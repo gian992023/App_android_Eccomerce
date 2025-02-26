@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,6 +9,7 @@ import 'package:conexion/provider/app_provider.dart';
 import 'package:conexion/screens/cart_screen/cart_screen.dart';
 import 'package:conexion/screens/check_out/check_out.dart';
 import 'package:conexion/screens/favourite_screen/favourite_screen.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import '../../constants/constants.dart';
 class ProductDetails extends StatefulWidget {
@@ -371,6 +374,55 @@ class BusinessPrint extends StatelessWidget {
     return null;
   }
 
+  Future<LatLng?> getBusinessLocation(String ownerId) async {
+    try {
+      DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore
+          .instance
+          .collection("mapas")
+          .doc(ownerId)
+          .get();
+
+      if (snapshot.exists) {
+        String? address = snapshot.data()?['address'];
+        if (address != null && address.isNotEmpty) {
+          return await _getCoordinatesFromAddress(address);
+        }
+      }
+    } catch (e) {
+      print('Error al obtener la ubicación del negocio: $e');
+    }
+
+    return null;
+  }
+
+  /// Obtiene las coordenadas a partir de una dirección usando la API de Google Maps
+  Future<LatLng?> _getCoordinatesFromAddress(String address) async {
+    const String _googleApiKey = "AIzaSyDN6oYrSPCNj2rD5oa9GCqahkIpPXS33eI";
+
+    final String url =
+        'https://maps.googleapis.com/maps/api/geocode/json?address=${Uri.encodeComponent(address)}&key=$_googleApiKey';
+
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        if (data['results'].isNotEmpty) {
+          final location = data['results'][0]['geometry']['location'];
+          return LatLng(location['lat'], location['lng']);
+        } else {
+          print('No se encontraron resultados para la dirección.');
+        }
+      } else {
+        print('Error en la solicitud: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error al obtener coordenadas: $e');
+    }
+
+    return null;
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -410,7 +462,7 @@ class BusinessPrint extends StatelessWidget {
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              SizedBox(height: 20), // Espacio superior
+                              SizedBox(height: 20),
                               Center(
                                 child: CircleAvatar(
                                   backgroundImage: NetworkImage(
@@ -437,7 +489,34 @@ class BusinessPrint extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              Divider(), // División entre usuario y productos
+                              Divider(),
+                              Center(
+                                child: ElevatedButton(
+                                  onPressed: () async {
+                                    LatLng? location =
+                                    await getBusinessLocation(ownerId!);
+
+                                    if (location != null) {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => MapScreen(
+                                            location: location,
+                                          ),
+                                        ),
+                                      );
+                                    } else {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                              'Ubicación no disponible para este negocio'),
+                                        ),
+                                      );
+                                    }
+                                  },
+                                  child: Text('Ver en el mapa'),
+                                ),
+                              ),
                             ],
                           );
                         } else {
@@ -482,7 +561,7 @@ class BusinessPrint extends StatelessWidget {
                                         MediaQuery.of(context).size.width /
                                             2 -
                                             24,
-                                        height: 200, // Ajuste de altura de la imagen
+                                        height: 200,
                                       ),
                                     ),
                                     Padding(
@@ -516,7 +595,7 @@ class BusinessPrint extends StatelessWidget {
                             ),
                           );
                         }).toList(),
-                        SizedBox(height: 30), // Espacio adicional al final
+                        SizedBox(height: 30),
                       ],
                     ),
                   ],
@@ -528,6 +607,33 @@ class BusinessPrint extends StatelessWidget {
               child: Text('No hay datos'),
             );
           }
+        },
+      ),
+    );
+  }
+}
+
+class MapScreen extends StatelessWidget {
+  final LatLng location;
+
+  const MapScreen({Key? key, required this.location}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Mapa del negocio'),
+      ),
+      body: GoogleMap(
+        initialCameraPosition: CameraPosition(
+          target: location,
+          zoom: 15,
+        ),
+        markers: {
+          Marker(
+            markerId: MarkerId('businessLocation'),
+            position: location,
+          ),
         },
       ),
     );

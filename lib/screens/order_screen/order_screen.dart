@@ -28,7 +28,6 @@ class OrderScreen extends StatelessWidget {
         for (var productDoc in productsQuerySnapshot.docs) {
           var data = productDoc.data() as Map<String, dynamic>?;
           if (data != null && data['id'] == productId) {
-            // Retornar el ID del dueño del producto
             return doc.id;
           }
         }
@@ -94,14 +93,13 @@ class OrderScreen extends StatelessWidget {
                     if (qualityRating > 0 &&
                         punctualityRating > 0 &&
                         accuracyRating > 0) {
-                      await updateOrderStatus(orderModel.orderId);
-                      // Guardar la encuesta en Firestore
                       await _saveSurveyToDatabase(
                         ownerId,
                         qualityRating,
                         punctualityRating,
                         accuracyRating,
                       );
+                      await _updateOrderStatus( orderModel.orderId);
                       Navigator.of(context).pop();
                     }
                   },
@@ -113,6 +111,15 @@ class OrderScreen extends StatelessWidget {
         );
       },
     );
+  }
+
+  Future<void> _updateOrderStatus( String orderId) async {
+    await FirebaseFirestore.instance
+        .collection("userOrders")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection("orders")
+        .doc(orderId)
+        .update({"status": "Calificado"});
   }
 
   Widget _buildRatingQuestion(
@@ -170,19 +177,7 @@ class OrderScreen extends StatelessWidget {
       });
     }
   }
-  Future<void> updateOrderStatus(String orderId) async {
-    try {
-      await FirebaseFirestore.instance
-          .collection("userOrders")
-          .doc(FirebaseAuth.instance.currentUser!.uid)
-          .collection("orders")
-          .doc(orderId)
-          .update({"status": "calificado"});
-      debugPrint("Estado de la orden actualizado a 'calificado'.");
-    } catch (e) {
-      debugPrint("Error al actualizar el estado de la orden: $e");
-    }
-  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -218,11 +213,8 @@ class OrderScreen extends StatelessWidget {
               padding: const EdgeInsets.all(12),
               itemBuilder: (context, index) {
                 OrderModel orderModel = snapshot.data![index];
-
-                if (orderModel.status == "Entregado") {
-                  WidgetsBinding.instance.addPostFrameCallback((_) async {
-                    String? ownerId =
-                    await findOwnerId(orderModel.products[0].id);
+                if (orderModel.status == "aceptado") {
+                  findOwnerId(orderModel.products[0].id).then((ownerId) {
                     if (ownerId != null) {
                       _showSurveyDialog(context, ownerId, orderModel);
                     }

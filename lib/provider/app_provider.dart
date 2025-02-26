@@ -55,7 +55,6 @@ class AppProvider with ChangeNotifier {
 
   void updateUserInfoFirebase(
       BuildContext context, UserModel userModel, File? file) async {
-
     if (file == null) {
       showLoaderDialog(context);
       _userModel = userModel;
@@ -74,9 +73,7 @@ class AppProvider with ChangeNotifier {
           .collection("users")
           .doc(_userModel!.id)
           .set(_userModel!.toJson());
-
       Navigator.of(context, rootNavigator: true).pop();
-
       Navigator.of(context).pop();
     }
     showMessage("Perfil actualizado exitosamente");

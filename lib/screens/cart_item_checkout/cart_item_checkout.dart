@@ -155,27 +155,16 @@ class _CartItemCheckoutState extends State<CartItemCheckout> {
                   String userEmail = appProvider.getUserInformation.email;
                   List<Map<String, dynamic>> products = appProvider.getBuyProductList
                       .map((product) => {
-                    "name": product.name,
-                    "qty": product.qty,
-                    "price": product.price
-                  })
-                      .toList();
-
-
-                  // Subir el pedido a Firebase
+                    "name": product.name,"qty": product.qty,"price": product.price
+                  }).toList();
                   bool value = await FirebaseFirestoreHelper.instance.uploadOrderedProductFirebase(
                       appProvider.getBuyProductList,
-                      context,
-                      "Pago en efectivo",
-                      "pago");
-
+                      context,"Pago en efectivo","pago");
                   // Limpiar el carrito de compras
                   appProvider.clearBuyProduct();
-
                   if (value) {
                     // Enviar correo con los detalles del pedido
                     await sendEmail(userName, userEmail, products);
-
                     // Navegar a la pantalla principal después de un retraso
                     Future.delayed(const Duration(seconds: 2), () {
                       Routes.instance.push(
